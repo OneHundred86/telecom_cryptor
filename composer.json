@@ -5,7 +5,7 @@
     "license": "MIT",
     "require": {
         "php": "^7.3|^8.0",
-        "guzzlehttp/guzzle": "^7.0.1",
+        "guzzlehttp/guzzle": ">=6.0",
         "oh86/sm": "^1.3"
     },
     "autoload": {
