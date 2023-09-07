@@ -1,0 +1,22 @@
+{
+    "name": "oh86/telecom_cryptor",
+    "description": "电信密码池加解密",
+    "keywords": ["telecom", "cryptor", "sm3", "sm4"],
+    "license": "MIT",
+    "require": {
+        "php": "^7.3|^8.0",
+        "guzzlehttp/guzzle": "^7.0.1",
+        "oh86/sm": "^1.3"
+    },
+    "autoload": {
+        "psr-4": {
+            "Oh86\\TelecomCryptor\\": "src/"
+        }
+    },
+    "authors": [
+        {
+            "name": "chenguangjun",
+            "email": "chen.gj@qq.com"
+        }
+    ]
+}
