@@ -141,7 +141,7 @@ class ClientV1
     public function hmac(string $message, string $accessToken, int $keyIndex, string $algo): array
     {
         $client = Util::newHttpClient();
-        $url = sprintf("%s/%s/ccsp-eds/api/v1/hmac", $this->host, $this->svsNode);
+        $url = sprintf("%s/%s/ccsp-eds/api/v1/hmac", $this->host, $this->edsNode);
         $response = $client->post($url, [
             "headers" => $this->appendAuthorizationHeaders([], $accessToken),
             "json" => [
