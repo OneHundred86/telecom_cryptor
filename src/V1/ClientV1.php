@@ -30,7 +30,8 @@ class ClientV1
     /**
      * @param array{host: string, ak: string, sk: string, eds_node: string, svs_node: string} $config
      */
-    public function __construct(array $config) {
+    public function __construct(array $config)
+    {
         $this->host = $config["host"];
         $this->ak = $config["ak"];
         $this->sk = $config["sk"];
@@ -42,7 +43,8 @@ class ClientV1
      * @throws \GuzzleHttp\Exception\GuzzleException
      * @throws FetchTokenException
      */
-    public function getToken() : array {
+    public function getToken() : array
+    {
         $client = Util::newHttpClient();
 
         $url = sprintf("%s/ccsp-iam/v1/api/token", $this->host);
@@ -80,7 +82,7 @@ class ClientV1
         return $headers;
     }
 
-    public function encrypt(string $text, string $accessToken, int $keyIndex, string $algo, ?string $iv = null, ?string $aad = null) :array
+    public function encrypt(string $text, string $accessToken, int $keyIndex, string $algo, ?string $iv = null, ?string $aad = null): array
     {
         $client = Util::newHttpClient();
 
@@ -108,7 +110,7 @@ class ClientV1
         return $jsonArr["data"];
     }
 
-    public function decrypt(string $cipherText, string $accessToken, int $keyIndex, string $algo, ?string $iv = null, ?string $aad = null, ?string $tag = null) : array
+    public function decrypt(string $cipherText, string $accessToken, int $keyIndex, string $algo, ?string $iv = null, ?string $aad = null, ?string $tag = null): array
     {
         $client = Util::newHttpClient();
 
@@ -136,7 +138,7 @@ class ClientV1
         return $jsonArr["data"];
     }
 
-    public function hmac(string $message, string $accessToken, int $keyIndex, string $algo) : array
+    public function hmac(string $message, string $accessToken, int $keyIndex, string $algo): array
     {
         $client = Util::newHttpClient();
         $url = sprintf("%s/%s/ccsp-eds/api/v1/hmac", $this->host, $this->svsNode);

@@ -10,8 +10,14 @@ use Oh86\TelecomCryptor\V1\ClientV1;
 class Cryptor
 {
     private array $config;
+    private ClientV1 $client;
+
+    /**
+     * @param array{host: string, ak: string, sk: string, eds_node: string, svs_node: string, sm4_key_index: int, hmac_key_index: int} $config
+     */
     public function __construct(array $config) {
         $this->config = $config;
+        $this->client = new ClientV1($config);
     }
 
     /**
@@ -24,9 +30,7 @@ class Cryptor
             return $data["accessToken"];
         }
 
-        $clientV1 = new ClientV1($this->config);
-
-        $data = $clientV1->getToken();
+        $data = $this->client->getToken();
         Cache::put($cacheKey, $data, now()->addSeconds($data["expiresIn"] - 60));
 
         return $data["accessToken"];
@@ -42,8 +46,7 @@ class Cryptor
      */
     public function sm4Encrypt(string $text, string $algo = "SGD_SM4_ECB") : string
     {
-        $clientV1 = new ClientV1($this->config);
-        $data = $clientV1->encrypt(base64_encode($text), $this->getAccessToken(), $this->config["sm4_key_index"], $algo);
+        $data = $this->client->encrypt(base64_encode($text), $this->getAccessToken(), $this->config["sm4_key_index"], $algo);
         $bin = base64_decode($data["cipherText"]);
         return bin2hex($bin);
     }
@@ -58,9 +61,8 @@ class Cryptor
      */
     public function sm4Decrypt(string $cipherText, string $algo = "SGD_SM4_ECB") : string
     {
-        $clientV1 = new ClientV1($this->config);
         $cipherText = base64_encode(hex2bin($cipherText));
-        $data = $clientV1->decrypt($cipherText, $this->getAccessToken(), $this->config["sm4_key_index"], $algo);
+        $data = $this->client->decrypt($cipherText, $this->getAccessToken(), $this->config["sm4_key_index"], $algo);
         return base64_decode($data["plainText"]);
     }
 
@@ -71,9 +73,8 @@ class Cryptor
      */
     public function hmac(string $text, string $algo = "SGD_SM3_HMAC") : string
     {
-        $clientV1 = new ClientV1($this->config);
         $cipherText = base64_encode($text);
-        $data = $clientV1->hmac($cipherText, $this->getAccessToken(), $this->config["hmac_key_index"], $algo);
+        $data = $this->client->hmac($cipherText, $this->getAccessToken(), $this->config["hmac_key_index"], $algo);
         return $data["mac"];
     }
 }

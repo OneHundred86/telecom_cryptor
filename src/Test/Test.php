@@ -13,6 +13,8 @@ class Test
             "host" => env("TELECOM_ENCRYPTOR_HOST"),
             "ak" => env("TELECOM_ENCRYPTOR_AK"),
             "sk" => env("TELECOM_ENCRYPTOR_SK"),
+            "eds_node" => "eds-52",
+            "svs_node" => "svs-10",
             "sm4_key_index" => env("TELECOM_ENCRYPTOR_SM4_KEY_INDEX"),
             "hmac_key_index" => env("TELECOM_ENCRYPTOR_HMAC_KEY_INDEX"),
         ]);
