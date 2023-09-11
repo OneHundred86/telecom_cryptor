@@ -16,10 +16,26 @@ class ClientV1
     private string $ak;
     private string $sk;
 
+    /**
+     * 加密解密服务节点
+     * @var string
+     */
+    private string $edsNode;
+    /**
+     * 签名验证服务节点
+     * @var string
+     */
+    private string $svsNode;
+
+    /**
+     * @param array{host: string, ak: string, sk: string, eds_node: string, svs_node: string} $config
+     */
     public function __construct(array $config) {
         $this->host = $config["host"];
         $this->ak = $config["ak"];
         $this->sk = $config["sk"];
+        $this->edsNode = $config["eds_node"];
+        $this->svsNode = $config["svs_node"];
     }
 
     /**
@@ -68,7 +84,7 @@ class ClientV1
     {
         $client = Util::newHttpClient();
 
-        $url = sprintf("%s/eds-52/ccsp-eds/api/v1/encrypt", $this->host);
+        $url = sprintf("%s/%s/ccsp-eds/api/v1/encrypt", $this->host, $this->edsNode);
         $response = $client->post($url, [
             "headers" => $this->appendAuthorizationHeaders([], $accessToken),
             "json" => [
@@ -96,7 +112,7 @@ class ClientV1
     {
         $client = Util::newHttpClient();
 
-        $url = sprintf("%s/eds-52/ccsp-eds/api/v1/decrypt", $this->host);
+        $url = sprintf("%s/%s/ccsp-eds/api/v1/decrypt", $this->host, $this->edsNode);
         $response = $client->post($url, [
             "headers" => $this->appendAuthorizationHeaders([], $accessToken),
             "json" => [
@@ -123,7 +139,7 @@ class ClientV1
     public function hmac(string $message, string $accessToken, int $keyIndex, string $algo) : array
     {
         $client = Util::newHttpClient();
-        $url = sprintf("%s/eds-52/ccsp-eds/api/v1/hmac", $this->host);
+        $url = sprintf("%s/%s/ccsp-eds/api/v1/hmac", $this->host, $this->svsNode);
         $response = $client->post($url, [
             "headers" => $this->appendAuthorizationHeaders([], $accessToken),
             "json" => [
